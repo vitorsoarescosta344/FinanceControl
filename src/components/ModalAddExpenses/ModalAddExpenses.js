@@ -8,9 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import MaskInput, {Masks} from 'react-native-mask-input';
 import {FinancesRealmContext} from '../../models';
 import textStyles from '../../utils/textStyles';
 import styles from './styles';
+import {formatCurrency} from 'react-native-format-currency';
+import {useTheme} from '@rneui/themed';
 
 const {useRealm} = FinancesRealmContext;
 
@@ -18,14 +22,18 @@ export default function ModalAddExpenses({visible, setVisible, onSubmit}) {
   const realm = useRealm();
 
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [type, setType] = useState('expense');
+  const [category, setCategory] = useState('personal');
+  const [value, setValue] = useState('');
 
   const [loading, setLoading] = useState(false);
 
+  const {theme} = useTheme();
+
   const handleSubmit = () => {
-    onSubmit(name, description);
+    onSubmit(name, type, category, value);
     setName('');
-    setDescription('');
+    setValue('');
     setVisible(false);
   };
 
@@ -47,6 +55,41 @@ export default function ModalAddExpenses({visible, setVisible, onSubmit}) {
               }}
             />
           </View>
+          <View style={[styles.dropdownContainer, {marginBottom: 20}]}>
+            <Picker
+              mode="dropdown"
+              selectedValue={type}
+              onValueChange={v => setType(v)}>
+              <Picker.Item label="Entrada" value={'income'} />
+              <Picker.Item label="Saida" value={'expense'} />
+            </Picker>
+          </View>
+          {type === 'expense' && (
+            <>
+              <View style={[styles.dropdownContainer, {marginBottom: 20}]}>
+                <Picker
+                  mode="dropdown"
+                  selectedValue={category}
+                  onValueChange={v => setCategory(v)}>
+                  <Picker.Item label="Pessoal" value={'personal'} />
+                  <Picker.Item label="Alimentação" value={'food'} />
+                  <Picker.Item label="Transporte" value={'transport'} />
+                  <Picker.Item label="Saúde" value={'health'} />
+                  <Picker.Item label="Outros" value={'other'} />
+                </Picker>
+              </View>
+            </>
+          )}
+          <View style={styles.textInputContainer}>
+            <MaskInput
+              mask={Masks.BRL_CURRENCY}
+              placeholder="Valor"
+              style={[textStyles.textRegular, {color: '#333'}]}
+              value={value}
+              keyboardType="decimal-pad"
+              onChangeText={text => setValue(text.replace('R$ ', ''))}
+            />
+          </View>
           <>
             {loading ? (
               <>
@@ -56,7 +99,10 @@ export default function ModalAddExpenses({visible, setVisible, onSubmit}) {
               <TouchableOpacity
                 onPress={handleSubmit}
                 style={styles.buttonContainer}>
-                <Text style={textStyles.textBold}>Adicionar</Text>
+                <Text
+                  style={[textStyles.textBold, {color: theme.colors.white}]}>
+                  Adicionar
+                </Text>
               </TouchableOpacity>
             )}
           </>

@@ -28,6 +28,17 @@ export default StyleSheet.create({
     borderColor: '#e5e5e5',
     borderRadius: 10,
   },
+  dropdownContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    height: 40,
+    //marginBottom: 20,
+    //paddingHorizontal: 5,
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#e5e5e5',
+    borderRadius: 10,
+  },
   buttonContainer: {
     height: 40,
     paddingHorizontal: 30,
