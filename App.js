@@ -1,8 +1,14 @@
 import React from 'react';
-import {View} from 'react-native';
+import {ThemeProvider, createTheme} from '@rneui/themed';
 import ChartComponent from './src/components/ChartComponent';
 import HomeScreen from './src/screens/HomeScreen';
 
+const theme = createTheme({});
+
 export default function App() {
-  return <HomeScreen />;
+  return (
+    <ThemeProvider theme={theme}>
+      <HomeScreen />
+    </ThemeProvider>
+  );
 }
