@@ -2,6 +2,7 @@ import {FAB, useTheme} from '@rneui/themed';
 import {FlatList, View} from 'react-native';
 import ChartComponent from '../../components/ChartComponent';
 import ExpensesListItem from '../../components/ExpensesListItem';
+import ModalAddExpenses from '../../components/ModalAddExpenses';
 import Container from '../../layout/Container';
 
 export default function HomeScreen() {
@@ -28,6 +29,7 @@ export default function HomeScreen() {
         icon={{name: 'add', color: 'white'}}
         color={theme.colors.primary}
       />
+      <ModalAddExpenses visible={true} />
     </>
   );
 }
