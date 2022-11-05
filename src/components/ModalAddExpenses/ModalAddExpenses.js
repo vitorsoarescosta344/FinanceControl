@@ -31,7 +31,7 @@ export default function ModalAddExpenses({visible, setVisible, onSubmit}) {
   const {theme} = useTheme();
 
   const handleSubmit = () => {
-    onSubmit(name, type, category, value);
+    onSubmit(name, type, type === 'income' ? null : category, value);
     setName('');
     setValue('');
     setVisible(false);

@@ -1,4 +1,5 @@
 import {FAB, useTheme} from '@rneui/themed';
+import {useEffect} from 'react';
 import {useCallback, useMemo, useState} from 'react';
 import {FlatList, Text, View} from 'react-native';
 import ChartComponent from '../../components/ChartComponent';
@@ -38,24 +39,6 @@ export default function HomeScreen() {
   let other = 0;
   let income = 0;
 
-  for (let index = 0; index < data.length; index++) {
-    const element = data[index];
-
-    if (element.category === 'personal') {
-      personal += parseFloat(element.value.replace(',', '.'));
-    } else if (element.category === 'food') {
-      food += parseFloat(element.value.replace(',', '.'));
-    } else if (element.category === 'transport') {
-      transport += parseFloat(element.value.replace(',', '.'));
-    } else if (element.category === 'health') {
-      health += parseFloat(element.value.replace(',', '.'));
-    } else if (element.category === 'other') {
-      other += parseFloat(element.value.replace(',', '.'));
-    } else {
-      income += parseFloat(element.value.replace(',', '.'));
-    }
-  }
-
   const finances = useMemo(() => result.sorted('createdAt'), [result]);
 
   const handleDeleteFinances = useCallback(
@@ -79,14 +62,39 @@ export default function HomeScreen() {
     [realm],
   );
 
-  let amount = parseFloat(
+  let amount = '0';
+
+  for (let index = 0; index < finances.length; index++) {
+    const element = finances[index];
+
+    if (element.category === 'personal') {
+      personal += parseFloat(element.value.replace(',', '.'));
+    } else if (element.category === 'food') {
+      food += parseFloat(element.value.replace(',', '.'));
+    } else if (element.category === 'transport') {
+      transport += parseFloat(element.value.replace(',', '.'));
+    } else if (element.category === 'health') {
+      health += parseFloat(element.value.replace(',', '.'));
+    } else if (element.category === 'other') {
+      other += parseFloat(element.value.replace(',', '.'));
+    } else if (element.type === 'income') {
+      income += parseFloat(element.value.replace(',', '.'));
+    }
+  }
+
+  amount = parseFloat(
     income - (personal + food + transport + health + other),
   ).toFixed(2);
+
+  console.log(personal);
 
   return (
     <>
       <Container>
         <View style={{flex: 1, paddingVertical: 10}}>
+          <View style={{paddingHorizontal: 15, marginBottom: 20}}>
+            <Text style={[textStyles.textBold, {fontSize: 20}]}>Despesas</Text>
+          </View>
           <ChartComponent
             dataArray={[personal, food, transport, health, other]}
           />
@@ -114,19 +122,12 @@ export default function HomeScreen() {
             </Text>
           </View>
           <FlatList
-            data={data}
+            data={finances}
+            keyExtractor={item => item._id.toString()}
             renderItem={({item, index}) => {
               return <ExpensesListItem item={item} />;
             }}
           />
-          {/* <ExpensesListItem
-            item={{
-              name: 'Lojas Renner',
-              type: 'expense',
-              category: 'Pessoais',
-              value: '10,00',
-            }}
-          /> */}
         </View>
       </Container>
       <FAB

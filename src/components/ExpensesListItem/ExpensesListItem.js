@@ -6,6 +6,8 @@ import styles from './styles';
 export default function ExpensesListItem({item}) {
   const {theme} = useTheme();
 
+  console.log(item);
+
   return (
     <View style={styles.container}>
       <View>
