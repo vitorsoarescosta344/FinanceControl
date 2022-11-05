@@ -125,7 +125,12 @@ export default function HomeScreen() {
             data={finances}
             keyExtractor={item => item._id.toString()}
             renderItem={({item, index}) => {
-              return <ExpensesListItem item={item} />;
+              return (
+                <ExpensesListItem
+                  item={item}
+                  onDelete={() => handleDeleteFinances(item)}
+                />
+              );
             }}
           />
         </View>
