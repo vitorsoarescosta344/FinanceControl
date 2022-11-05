@@ -13,8 +13,6 @@ export default function ExpensesListItem({item, onDelete}) {
     setDialogVisible(false);
   }
 
-  console.log(item);
-
   return (
     <View style={styles.container}>
       <View>

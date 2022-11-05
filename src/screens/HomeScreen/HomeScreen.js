@@ -116,7 +116,12 @@ export default function HomeScreen() {
             renderItem={({item, index}) => {
               return (
                 <ExpensesListItem
-                  item={item}
+                  item={{
+                    name: item.name,
+                    type: item.type,
+                    value: item.value,
+                    category: item.category,
+                  }}
                   onDelete={() => handleDeleteFinances(item)}
                 />
               );
