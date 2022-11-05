@@ -75,8 +75,6 @@ export default function HomeScreen() {
     income - (personal + food + transport + health + other),
   ).toFixed(2);
 
-  console.log(personal);
-
   return (
     <>
       <Container>
