@@ -21,17 +21,6 @@ export default function HomeScreen() {
 
   const result = useQuery(Finances);
 
-  {
-    /** 
-
-  <Picker.Item label="Pessoal" value={'personal'} />
-                  <Picker.Item label="Alimentação" value={'food'} />
-                  <Picker.Item label="Transporte" value={'transport'} />
-                  <Picker.Item label="Saúde" value={'health'} />
-                  <Picker.Item label="Outros" value={'other'} />
-*/
-  }
-
   let personal = 0;
   let food = 0;
   let transport = 0;
