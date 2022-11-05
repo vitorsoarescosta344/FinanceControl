@@ -1,6 +1,6 @@
 import {FAB, useTheme} from '@rneui/themed';
 import {useCallback, useMemo, useState} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import ChartComponent from '../../components/ChartComponent';
 import ExpensesListItem from '../../components/ExpensesListItem';
 import ModalAddExpenses from '../../components/ModalAddExpenses';
@@ -8,6 +8,7 @@ import Container from '../../layout/Container';
 import {FinancesRealmContext} from '../../models';
 import {Finances} from '../../models/Finances';
 import {data} from '../../utils/mockdata';
+import textStyles from '../../utils/textStyles';
 
 const {useQuery, useRealm} = FinancesRealmContext;
 
@@ -35,6 +36,7 @@ export default function HomeScreen() {
   let transport = 0;
   let health = 0;
   let other = 0;
+  let income = 0;
 
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
@@ -49,6 +51,8 @@ export default function HomeScreen() {
       health += parseFloat(element.value.replace(',', '.'));
     } else if (element.category === 'other') {
       other += parseFloat(element.value.replace(',', '.'));
+    } else {
+      income += parseFloat(element.value.replace(',', '.'));
     }
   }
 
@@ -75,6 +79,10 @@ export default function HomeScreen() {
     [realm],
   );
 
+  let amount = parseFloat(
+    income - (personal + food + transport + health + other),
+  ).toFixed(2);
+
   return (
     <>
       <Container>
@@ -82,15 +90,43 @@ export default function HomeScreen() {
           <ChartComponent
             dataArray={[personal, food, transport, health, other]}
           />
-          {/* <FlatList /> */}
-          <ExpensesListItem
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              padding: 15,
+              borderBottomColor: '#D9D9D9',
+              borderBottomWidth: 2,
+              borderTopColor: '#D9D9D9',
+              borderTopWidth: 2,
+            }}>
+            <Text style={[textStyles.textBold, {fontSize: 22}]}>Saldo: </Text>
+            <Text
+              style={[
+                textStyles.textBold,
+                {
+                  fontSize: 22,
+                  color:
+                    theme.colors[amount.includes('-') ? 'error' : 'success'],
+                },
+              ]}>
+              {amount}
+            </Text>
+          </View>
+          <FlatList
+            data={data}
+            renderItem={({item, index}) => {
+              return <ExpensesListItem item={item} />;
+            }}
+          />
+          {/* <ExpensesListItem
             item={{
               name: 'Lojas Renner',
               type: 'expense',
               category: 'Pessoais',
               value: '10,00',
             }}
-          />
+          /> */}
         </View>
       </Container>
       <FAB

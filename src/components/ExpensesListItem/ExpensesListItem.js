@@ -13,7 +13,16 @@ export default function ExpensesListItem({item}) {
         {item.type === 'expense' && (
           <>
             <Text style={[textStyles.textRegular]}>
-              Categoria: {item.category}
+              Categoria:{' '}
+              {item.category === 'personal'
+                ? 'Pessoal'
+                : item.category === 'transport'
+                ? 'Transporte'
+                : item.category === 'health'
+                ? 'Saúde'
+                : item.category === 'food'
+                ? 'Alimentação'
+                : 'Outros'}
             </Text>
           </>
         )}
