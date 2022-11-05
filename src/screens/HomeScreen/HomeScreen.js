@@ -7,6 +7,7 @@ import ModalAddExpenses from '../../components/ModalAddExpenses';
 import Container from '../../layout/Container';
 import {FinancesRealmContext} from '../../models';
 import {Finances} from '../../models/Finances';
+import {data} from '../../utils/mockdata';
 
 const {useQuery, useRealm} = FinancesRealmContext;
 
@@ -17,6 +18,39 @@ export default function HomeScreen() {
   const realm = useRealm();
 
   const result = useQuery(Finances);
+
+  {
+    /** 
+
+  <Picker.Item label="Pessoal" value={'personal'} />
+                  <Picker.Item label="Alimentação" value={'food'} />
+                  <Picker.Item label="Transporte" value={'transport'} />
+                  <Picker.Item label="Saúde" value={'health'} />
+                  <Picker.Item label="Outros" value={'other'} />
+*/
+  }
+
+  let personal = 0;
+  let food = 0;
+  let transport = 0;
+  let health = 0;
+  let other = 0;
+
+  for (let index = 0; index < data.length; index++) {
+    const element = data[index];
+
+    if (element.category === 'personal') {
+      personal += parseFloat(element.value.replace(',', '.'));
+    } else if (element.category === 'food') {
+      food += parseFloat(element.value.replace(',', '.'));
+    } else if (element.category === 'transport') {
+      transport += parseFloat(element.value.replace(',', '.'));
+    } else if (element.category === 'health') {
+      health += parseFloat(element.value.replace(',', '.'));
+    } else if (element.category === 'other') {
+      other += parseFloat(element.value.replace(',', '.'));
+    }
+  }
 
   const finances = useMemo(() => result.sorted('createdAt'), [result]);
 
@@ -45,7 +79,9 @@ export default function HomeScreen() {
     <>
       <Container>
         <View style={{flex: 1, paddingVertical: 10}}>
-          <ChartComponent />
+          <ChartComponent
+            dataArray={[personal, food, transport, health, other]}
+          />
           {/* <FlatList /> */}
           <ExpensesListItem
             item={{
@@ -59,10 +95,16 @@ export default function HomeScreen() {
       </Container>
       <FAB
         placement="right"
+        onPress={() => setModalVisible(!modalVisible)}
         icon={{name: 'add', color: 'white'}}
         color={theme.colors.primary}
+        visible={!modalVisible}
       />
-      <ModalAddExpenses visible={true} onSubmit={handleAddFinances} />
+      <ModalAddExpenses
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        onSubmit={handleAddFinances}
+      />
     </>
   );
 }

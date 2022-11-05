@@ -2,9 +2,9 @@ import {Dimensions, View} from 'react-native';
 import {BarChart} from 'react-native-chart-kit';
 import styles from './styles';
 
-export default function ChartComponent() {
+export default function ChartComponent({dataArray}) {
   let width = Dimensions.get('window').width;
-  const data = [50, 20, 2, 86];
+  const data = [50, 20, 2, 86, 22];
   const colorBar = [
     `rgba(236,255,0, ${1})`,
     `rgba(66,255, 0, ${1})`,
@@ -25,16 +25,17 @@ export default function ChartComponent() {
           color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
         }}
         data={{
-          labels: ['January', 'February', 'March', 'April'],
+          labels: ['Pessoal', 'Alimentação', 'Transporte', 'Saúde', 'Outros'],
           datasets: [
             {
-              data: data,
+              data: dataArray,
 
               colors: [
-                (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
-                (opacity = 1) => `rgba(66, 255, 0, ${opacity})`,
-                (opacity = 1) => `rgba(0, 255, 224, ${opacity})`,
-                (opacity = 1) => `rgba(255, 0, 247, ${opacity})`,
+                (opacity = 1) => `rgba(255, 224, 0, ${opacity})`,
+                (opacity = 1) => `rgba(0, 205, 255, ${opacity})`,
+                (opacity = 1) => `rgba(46, 0, 255, ${opacity})`,
+                (opacity = 1) => `rgba(255, 0, 50, ${opacity})`,
+                (opacity = 1) => `rgba(152, 152, 152, ${opacity})`,
               ],
             },
           ],
